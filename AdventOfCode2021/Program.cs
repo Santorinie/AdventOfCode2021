@@ -15,10 +15,13 @@ namespace AOC2021D1
         {
 
 
-            Day5Part1();
+            Day7 day7 = new Day7();
+            Console.WriteLine("START");
+            day7.Part1andPart2();
+            var valami = day7.fuels.OrderByDescending(x => x.Item1).Last();
 
-
-
+            Console.WriteLine("DONE");
+            
             Console.ReadKey();
         }
 
