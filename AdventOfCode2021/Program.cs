@@ -15,11 +15,10 @@ namespace AOC2021D1
         {
 
 
-            Day8 day8 = new Day8();
+            Day9 day9 = new Day9();
             Console.WriteLine("START");
-            day8.Part2Solution();
-            var fasz = day8.vegeredmenyek;
-
+            day9.part2();
+            var kala = day9.lowpointcounter;
             Console.WriteLine("DONE");
             
             Console.ReadKey();
