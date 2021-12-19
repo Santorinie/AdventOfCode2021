@@ -1,0 +1,27 @@
+﻿<Properties StartupConfiguration="{32765D7F-0D15-4A0E-86D9-F5E1B83158B1}|Default">
+  <MonoDevelop.Ide.ItemProperties.AdventOfCode2021 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="AdventOfCode2021/Day8.cs">
+    <Files>
+      <File FileName="AdventOfCode2021/Program.cs" Line="18" Column="34" />
+      <File FileName="AdventOfCode2021/Day8.cs" Line="63" Column="2" />
+      <File FileName="AdventOfCode2021/day8.txt" Line="10" Column="62" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="AdventOfCode2021" expanded="True">
+            <Node name="AdventOfCode2021" expanded="True">
+              <Node name="Day8.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
