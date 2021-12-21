@@ -17,8 +17,8 @@ namespace AOC2021D1
 
             Day9 day9 = new Day9();
             Console.WriteLine("START");
-            day9.part2();
-            var kala = day9.lowpointcounter;
+            //day9.part2();
+            //var kala = day9.lowpointcounter;
             Console.WriteLine("DONE");
             
             Console.ReadKey();

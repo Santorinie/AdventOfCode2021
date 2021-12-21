@@ -10,23 +10,29 @@ namespace AOC2021D1
         public Day9()
         {
             parse();
+            part2();
         }
 
         public static string[] input = File.ReadAllLines(@"/Users/mac/Projects/AdventOfCode2021/AdventOfCode2021/day9.txt");
         private static int inputLen = input.Length;
         public static int LineLen = input.First().ToCharArray().Count();
-
+        private static int Sorok = inputLen - 1;
+        private static int Oszlopok = LineLen - 1;
+        private List<Point> basins = new List<Point>();
         private List<string> szamok = new List<string>();
         public List<string> values = new List<string>();
+        private List<Point> pontok = new List<Point>();
+        //private Point[,] pontmatrix = new Point[Sorok+1,Oszlopok+1];
         private List<Tuple<int, int>> LowPoinLoc = new List<Tuple<int, int>>();
-        public double lowpointcounter = 0;
+        private List<Point> lowpointloc = new List<Point>();
+        public int lowpointcounter = 0;
         private double? OnRight = null;
         private double? OnLeft = null;
         private double? OnTop = null;
         private double? OnBot = null;
 
-
-
+        private List<Point> neighbours = new List<Point>();
+        private List<int> basincounts = new List<int>();
 
         public void part1()
         {
@@ -48,6 +54,7 @@ namespace AOC2021D1
                         {
                             values.Add(currentLocation.ToString());
                             LowPoinLoc.Add(new Tuple<int, int>(sorszam,oszlopszam));
+                            lowpointloc.Add(new Point() {X = sorszam,Y = oszlopszam, Value = char.GetNumericValue(szamok[sorszam][oszlopszam]),Checked = false });
                         }
                     }
                     else if (sorszam == inputLen-1 && oszlopszam == LineLen-1)
@@ -60,6 +67,7 @@ namespace AOC2021D1
                         {
                             values.Add(currentLocation.ToString());
                             LowPoinLoc.Add(new Tuple<int, int>(sorszam, oszlopszam));
+                            lowpointloc.Add(new Point() { X = sorszam, Y = oszlopszam, Value = char.GetNumericValue(szamok[sorszam][oszlopszam]), Checked = false });
 
                         }
                     }
@@ -73,6 +81,7 @@ namespace AOC2021D1
                         {
                             values.Add(currentLocation.ToString());
                             LowPoinLoc.Add(new Tuple<int, int>(sorszam, oszlopszam));
+                            lowpointloc.Add(new Point() { X = sorszam, Y = oszlopszam, Value = char.GetNumericValue(szamok[sorszam][oszlopszam]), Checked = false });
 
                         }
                     }
@@ -86,6 +95,7 @@ namespace AOC2021D1
                         {
                             values.Add(currentLocation.ToString());
                             LowPoinLoc.Add(new Tuple<int, int>(sorszam, oszlopszam));
+                            lowpointloc.Add(new Point() { X = sorszam, Y = oszlopszam, Value = char.GetNumericValue(szamok[sorszam][oszlopszam]), Checked = false });
 
                         }
                     }
@@ -99,6 +109,7 @@ namespace AOC2021D1
                         {
                             values.Add(currentLocation.ToString());
                             LowPoinLoc.Add(new Tuple<int, int>(sorszam, oszlopszam));
+                            lowpointloc.Add(new Point() { X = sorszam, Y = oszlopszam, Value = char.GetNumericValue(szamok[sorszam][oszlopszam]), Checked = false });
 
                         }
                     }
@@ -112,6 +123,7 @@ namespace AOC2021D1
                         {
                             values.Add(currentLocation.ToString());
                             LowPoinLoc.Add(new Tuple<int, int>(sorszam, oszlopszam));
+                            lowpointloc.Add(new Point() { X = sorszam, Y = oszlopszam, Value = char.GetNumericValue(szamok[sorszam][oszlopszam]), Checked = false });
 
                         }
                     }
@@ -125,6 +137,7 @@ namespace AOC2021D1
                         {
                             values.Add(currentLocation.ToString());
                             LowPoinLoc.Add(new Tuple<int, int>(sorszam, oszlopszam));
+                            lowpointloc.Add(new Point() { X = sorszam, Y = oszlopszam, Value = char.GetNumericValue(szamok[sorszam][oszlopszam]), Checked = false });
 
                         }
                     }
@@ -138,6 +151,7 @@ namespace AOC2021D1
                         {
                             values.Add(currentLocation.ToString());
                             LowPoinLoc.Add(new Tuple<int, int>(sorszam, oszlopszam));
+                            lowpointloc.Add(new Point() { X = sorszam, Y = oszlopszam, Value = char.GetNumericValue(szamok[sorszam][oszlopszam]), Checked = false });
 
                         }
                     }
@@ -151,6 +165,7 @@ namespace AOC2021D1
                         {
                             values.Add(currentLocation.ToString());
                             LowPoinLoc.Add(new Tuple<int, int>(sorszam, oszlopszam));
+                            lowpointloc.Add(new Point() { X = sorszam, Y = oszlopszam, Value = char.GetNumericValue(szamok[sorszam][oszlopszam]), Checked = false });
 
                         }
                     }
@@ -170,336 +185,95 @@ namespace AOC2021D1
         public void part2()
         {
             part1();
-            foreach (var item in LowPoinLoc)
+            for (int x = 0; x <= Sorok; x++)
             {
-                lowpointcounter += IsLowPoint(item.Item1, item.Item2, lowpointcounter);
+                for (int y = 0; y <= Oszlopok; y++)
+                {
+                    pontok.Add(new Point() { X = x, Y = y, Value = char.GetNumericValue(szamok[x][y])});
+                }
+            }
+            foreach (var item in lowpointloc)
+            {
+                basins.Clear();
+                lowpointcounter = CheckNeighbours(item,lowpointcounter);
+
+                var pina = basins.Distinct();
+                basincounts.Add(pina.Count());
+                Console.WriteLine($"Das ist basins: {pina.Count()}db");
             }
 
-            //lowpointcounter += IsLowPoint(LowPoinLoc[0].Item1,LowPoinLoc[0].Item2 , lowpointcounter);
+            Console.WriteLine($"Part2 solution: {basincounts.OrderByDescending(x => x).Take(3).Aggregate(1, (x, y) => x * y)}");
 
         }
 
-        private double IsLowPoint(int x, int y,double counter) //5 input, 10 line
+        private int CheckNeighbours(Point pont,int counter)
         {
-            List<double?> boundaries = new List<double?>();
-            var currentpos = char.GetNumericValue(szamok[x][y]);
-            if (x == 0 && y > 0 && y < LineLen-1)
+            List<Point> children = new List<Point>();
+            try
             {
-                OnRight = char.GetNumericValue(szamok[x][y + 1]);
-                OnLeft = char.GetNumericValue(szamok[x][y - 1]);
-                //OnTop = char.GetNumericValue(szamok[x - 1][y]);
-                OnBot = char.GetNumericValue(szamok[x + 1][y]);
-
-                boundaries.Add(OnRight);
-                boundaries.Add(OnLeft);
-                //boundaries.Add(OnTop);
-                boundaries.Add(OnBot);
-                if (currentpos < OnRight && currentpos < OnLeft && currentpos < OnBot)
-                {
-                    counter += boundaries.Where(x => x != 9).Count();
-                    counter += IsLowPoint(x,y+1,counter);
-                    counter += IsLowPoint(x,y-1,counter);
-                    //counter += IsLowPoint(x - 1, y, counter);
-                    counter += IsLowPoint(x + 1, y, counter);
-                    return counter;
-                }
+                OnLeft = pontok.First(x => x.Y == pont.Y-1 && x.X == pont.X).Value;
+                Point child = pontok.First(x => x.Y == pont.Y - 1 && x.X == pont.X);
+                children.Add(child);
             }
-            else if (x == inputLen-1 && y > 0 && y < LineLen-1)
+            catch (Exception)
             {
-                OnRight = char.GetNumericValue(szamok[x][y + 1]);
-                OnLeft = char.GetNumericValue(szamok[x][y - 1]);
-                OnTop = char.GetNumericValue(szamok[x - 1][y]);
-                //OnBot = char.GetNumericValue(szamok[x + 1][y]);
-                boundaries.Add(OnRight);
-                boundaries.Add(OnLeft);
-                boundaries.Add(OnTop);
-                //boundaries.Add(OnBot);
-                if (currentpos < OnRight && currentpos < OnLeft && currentpos < OnTop)
-                {
-                    counter += boundaries.Where(x => x != 9).Count();
-
-                    if (OnRight != 9)
-                    {
-
-                    counter += IsLowPoint(x, y + 1, counter);
-                    }
-                    if (OnLeft != 9)
-                    {
-
-                    counter += IsLowPoint(x, y - 1, counter);
-                    }
-                    if (OnTop != 9)
-                    {
-                    counter += IsLowPoint(x - 1, y, counter);
-
-                    }
-                    //if (OnBot != 9)
-                    //{
-                    //counter += IsLowPoint(x + 1, y, counter);
-
-                    //}
-                    return counter;
-                }
+                OnLeft = -1;
             }
-            else if (y == 0 && x > 0 && x < inputLen-1)
+            try
             {
-                OnRight = char.GetNumericValue(szamok[x][y + 1]);
-                //OnLeft = char.GetNumericValue(szamok[x][y - 1]);
-                OnTop = char.GetNumericValue(szamok[x - 1][y]);
-                OnBot = char.GetNumericValue(szamok[x + 1][y]);
-                boundaries.Add(OnRight);
-                //boundaries.Add(OnLeft);
-                boundaries.Add(OnTop);
-                boundaries.Add(OnBot);
-                if (currentpos < OnRight && currentpos < OnTop && currentpos < OnBot)
-                {
-                    counter += boundaries.Where(x => x != 9).Count();
+                OnRight = pontok.First(x => x.Y == pont.Y + 1 && x.X == pont.X).Value;
+                Point child = pontok.First(x => x.Y == pont.Y + 1 && x.X == pont.X);
+                children.Add(child);
 
-                    if (OnRight != 9)
-                    {
-
-                        counter += IsLowPoint(x, y + 1, counter);
-                    }
-                    //if (OnLeft != 9)
-                    //{
-
-                    //    counter += IsLowPoint(x, y - 1, counter);
-                    //}
-                    if (OnTop != 9)
-                    {
-                        counter += IsLowPoint(x - 1, y, counter);
-
-                    }
-                    if (OnBot != 9)
-                    {
-                        counter += IsLowPoint(x + 1, y, counter);
-
-                    }
-                    return counter;
-                }
             }
-            else if (y == LineLen-1 && x > 0 && x < inputLen-1)
+            catch (Exception)
             {
-                //OnRight = char.GetNumericValue(szamok[x][y + 1]);
-                OnLeft = char.GetNumericValue(szamok[x][y - 1]);
-                OnTop = char.GetNumericValue(szamok[x - 1][y]);
-                OnBot = char.GetNumericValue(szamok[x + 1][y]);
-                //boundaries.Add(OnRight);
-                boundaries.Add(OnLeft);
-                boundaries.Add(OnTop);
-                boundaries.Add(OnBot);
-                if (currentpos < OnTop && currentpos < OnLeft && currentpos < OnBot)
-                {
-                    counter += boundaries.Where(x => x != 9).Count();
-
-                    //if (OnRight != 9)
-                    //{
-
-                    //    counter += IsLowPoint(x, y + 1, counter);
-                    //}
-                    if (OnLeft != 9)
-                    {
-
-                        counter += IsLowPoint(x, y - 1, counter);
-                    }
-                    if (OnTop != 9)
-                    {
-                        counter += IsLowPoint(x - 1, y, counter);
-
-                    }
-                    if (OnBot != 9)
-                    {
-                        counter += IsLowPoint(x + 1, y, counter);
-
-                    }
-                    return counter;
-                }
+                OnRight = -1;
             }
-            else if (x == 0 && y == 0)
+            try
             {
-                OnRight = char.GetNumericValue(szamok[x][y + 1]);
-                //OnLeft = char.GetNumericValue(szamok[x][y - 1]);
-                //OnTop = char.GetNumericValue(szamok[x - 1][y]);
-                OnBot = char.GetNumericValue(szamok[x + 1][y]);
-                boundaries.Add(OnRight);
-                //boundaries.Add(OnLeft);
-                //boundaries.Add(OnTop);
-                boundaries.Add(OnBot);
-                if (currentpos < OnRight && currentpos < OnBot)
-                {
-                    counter += boundaries.Where(x => x != 9).Count();
+                OnTop = pontok.First(x => x.X == pont.X - 1 && x.Y == pont.Y).Value;
+                Point child = pontok.First(x => x.X == pont.X - 1 && x.Y == pont.Y);
+                children.Add(child);
 
-                    if (OnRight != 9)
-                    {
-
-                        counter += IsLowPoint(x, y + 1, counter);
-                    }
-                    //if (OnLeft != 9)
-                    //{
-
-                    //    counter += IsLowPoint(x, y - 1, counter);
-                    //}
-                    //if (OnTop != 9)
-                    //{
-                    //    counter += IsLowPoint(x - 1, y, counter);
-
-                    //}
-                    if (OnBot != 9)
-                    {
-                        counter += IsLowPoint(x + 1, y, counter);
-
-                    }
-                    return counter;
-                }
             }
-            else if (x == inputLen-1 && y == LineLen -1)
+            catch (Exception)
             {
-                //OnRight = char.GetNumericValue(szamok[x][y + 1]);
-                OnLeft = char.GetNumericValue(szamok[x][y - 1]);
-                OnTop = char.GetNumericValue(szamok[x - 1][y]);
-                //OnBot = char.GetNumericValue(szamok[x + 1][y]);
-                //boundaries.Add(OnRight);
-                boundaries.Add(OnLeft);
-                boundaries.Add(OnTop);
-                //boundaries.Add(OnBot);
-                if (currentpos < OnTop && currentpos < OnLeft)
-                {
-                    counter += boundaries.Where(x => x != 9).Count();
-
-                    //if (OnRight != 9)
-                    //{
-
-                    //    counter += IsLowPoint(x, y + 1, counter);
-                    //}
-                    if (OnLeft != 9)
-                    {
-
-                        counter += IsLowPoint(x, y - 1, counter);
-                    }
-                    if (OnTop != 9)
-                    {
-                        counter += IsLowPoint(x - 1, y, counter);
-
-                    }
-                    //if (OnBot != 9)
-                    //{
-                    //    counter += IsLowPoint(x + 1, y, counter);
-
-                    //}
-                    return counter;
-                }
+                OnTop = -1;
             }
-            else if (x == 0 && y == LineLen-1)
+            try
             {
-                //OnRight = char.GetNumericValue(szamok[x][y + 1]);
-                OnLeft = char.GetNumericValue(szamok[x][y - 1]);
-                //OnTop = char.GetNumericValue(szamok[x - 1][y]);
-                OnBot = char.GetNumericValue(szamok[x + 1][y]);
-                //boundaries.Add(OnRight);
-                boundaries.Add(OnLeft);
-                //boundaries.Add(OnTop);
-                boundaries.Add(OnBot);
-                if (currentpos < OnLeft && currentpos < OnBot)
-                {
-                    counter += boundaries.Where(x => x != 9).Count();
-                    //if (OnRight != 9)
-                    //{
-
-                    //    counter += IsLowPoint(x, y + 1, counter);
-                    //}
-                    if (OnLeft != 9)
-                    {
-
-                        counter += IsLowPoint(x, y - 1, counter);
-                    }
-                    //if (OnTop != 9)
-                    //{
-                    //    counter += IsLowPoint(x - 1, y, counter);
-
-                    //}
-                    if (OnBot != 9)
-                    {
-                        counter += IsLowPoint(x + 1, y, counter);
-
-                    }
-                    return counter;
-                }
+                OnBot = pontok.First(x => x.X == pont.X + 1 && x.Y == pont.Y).Value;
+                Point child = pontok.First(x => x.X == pont.X + 1 && x.Y == pont.Y);
+                children.Add(child);
             }
-            else if (x == inputLen-1 && y == 0)
+            catch (Exception)
             {
-                OnRight = char.GetNumericValue(szamok[x][y + 1]);
-                //OnLeft = char.GetNumericValue(szamok[x][y - 1]);
-                OnTop = char.GetNumericValue(szamok[x - 1][y]);
-                //OnBot = char.GetNumericValue(szamok[x + 1][y]);
-                boundaries.Add(OnRight);
-                //boundaries.Add(OnLeft);
-                boundaries.Add(OnTop);
-                //boundaries.Add(OnBot);
-                if (currentpos < OnRight && currentpos < OnTop)
-                {
-                    counter += boundaries.Where(x => x != 9).Count();
-
-                    if (OnRight != 9)
-                    {
-
-                        counter += IsLowPoint(x, y + 1, counter);
-                    }
-                    //if (OnLeft != 9)
-                    //{
-
-                    //    counter += IsLowPoint(x, y - 1, counter);
-                    //}
-                    if (OnTop != 9)
-                    {
-                        counter += IsLowPoint(x - 1, y, counter);
-
-                    }
-                    //if (OnBot != 9)
-                    //{
-                    //    counter += IsLowPoint(x + 1, y, counter);
-
-                    //}
-                    return counter;
-                }
+                OnBot = -1;
             }
-            else
+
+            //Ha a szomszéd nagyobb mint az alap pozíció és nem 9 akkor Ellenőrizzük
+            // Minden tag saját magát számolja meg
+            // pont az +1-et ad a maxhoz, a childrenek ha trueval térnek vissza +1-et adnak vissza
+            // A vizsgált tagok mindig az alaptagok
+            counter++;
+            basins.Add(pont);
+            var index = pontok.FindIndex(x => x.X == pont.X && x.Y == pont.Y && x.Value == pont.Value);
+            pontok.RemoveAt(index);
+            pontok.Add(new Point() { X = pont.X, Y = pont.Y, Checked = true, Value = pont.Value });
+            
+
+            foreach (var item in children)
             {
-                OnRight = char.GetNumericValue(szamok[x][y + 1]);
-                OnLeft = char.GetNumericValue(szamok[x][y - 1]);
-                OnTop = char.GetNumericValue(szamok[x - 1][y]);
-                OnBot = char.GetNumericValue(szamok[x + 1][y]);
-                boundaries.Add(OnRight);
-                boundaries.Add(OnLeft);
-                boundaries.Add(OnTop);
-                boundaries.Add(OnBot);
-                if (currentpos < OnRight && currentpos < OnLeft && currentpos < OnBot && currentpos < OnTop)
+                if (item.Value > pont.Value && item.Value != 9 && item.Checked == false)
                 {
-                    counter += boundaries.Where(x => x != 9).Count();
-
-                    if (OnRight != 9)
-                    {
-
-                        counter += IsLowPoint(x, y + 1, counter);
-                    }
-                    if (OnLeft != 9)
-                    {
-
-                        counter += IsLowPoint(x, y - 1, counter);
-                    }
-                    if (OnTop != 9)
-                    {
-                        counter += IsLowPoint(x - 1, y, counter);
-
-                    }
-                    if (OnBot != 9)
-                    {
-                        counter += IsLowPoint(x + 1, y, counter);
-
-                    }
-                    return counter;
+                    //basins.Add(item);
+                    counter = CheckNeighbours(item,counter);
                 }
+
             }
-            return 0;
+            return counter;
+
         }
 
 
@@ -511,5 +285,18 @@ namespace AOC2021D1
             }
         }
 
+    }
+
+    internal class Point
+    {
+
+        public Point()
+        {
+            //this.Checked = false;
+        }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public double Value { get; set; }
+        public bool Checked { get; set; }
     }
 }
