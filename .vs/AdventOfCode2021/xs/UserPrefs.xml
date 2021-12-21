@@ -3,7 +3,7 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="AdventOfCode2021/Program.cs" Line="18" Column="14" />
-      <File FileName="AdventOfCode2021/Day10.cs" Line="6" Column="1" />
+      <File FileName="AdventOfCode2021/Day10.cs" Line="109" Column="1" />
       <File FileName="AdventOfCode2021/day10.txt" Line="1" Column="25" />
     </Files>
     <Pads>
@@ -11,9 +11,15 @@
         <State name="__root__">
           <Node name="AdventOfCode2021" expanded="True">
             <Node name="AdventOfCode2021" expanded="True">
-              <Node name="day10.txt" selected="True" />
+              <Node name="Day10.cs" selected="True" />
             </Node>
           </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>karakter</Value>
+          <Value>openingSequence</Value>
         </State>
       </Pad>
     </Pads>
@@ -21,7 +27,9 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/mac/Projects/AdventOfCode2021/AdventOfCode2021/Day10.cs" relfile="AdventOfCode2021/Day10.cs" line="15" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>
