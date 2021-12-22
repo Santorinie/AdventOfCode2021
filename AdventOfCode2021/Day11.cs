@@ -11,18 +11,20 @@ namespace AOC2021D1
         {
             populateMatrix();
             AddNeighbours();
-            part1();
+            Part2();
             //WriteMatrix();
         }
 
         private Octopus[,] Matrix = new Octopus[10, 10];
         private string[] input = File.ReadAllLines(@"/Users/mac/Projects/AdventOfCode2021/AdventOfCode2021/day11.txt");
         private int FlashCounter = 0;
-
+        private int counter = 0;
         private void part1()
         {
+            
             for (int i = 0; i < 100; i++)
             {
+                
                 foreach (var octopus in Matrix)
                 {
                     octopus.Charge();
@@ -31,16 +33,57 @@ namespace AOC2021D1
                 {
                     if (octopus.Flashed)
                     {
+                        counter++;
                         octopus.Energy = 0;
                         FlashCounter++;
                         octopus.Flashed = false;
                     }
                 }
+                //if (counter == 100)
+                //{
+                //    Console.WriteLine($"Part2 answer: {i+1}");
+                //    break;
+                //}
                 //Console.WriteLine("\n-----------NEW ROUND-----------\n");
                 //WriteMatrix();
                 //Console.WriteLine("");
             }
                 Console.WriteLine($"Part 1 answer: {FlashCounter}");
+        }
+
+        private void Part2()
+        {
+            int cyclecounter = 0;
+            while (counter != 100)
+            {
+                cyclecounter++;
+                counter = 0;
+                foreach (var octopus in Matrix)
+                {
+                    octopus.Charge();
+                }
+                foreach (var octopus in Matrix)
+                {
+                    if (octopus.Flashed)
+                    {
+                        counter++;
+                        octopus.Energy = 0;
+                        //FlashCounter++;
+                        octopus.Flashed = false;
+                    }
+                }
+                if (counter == 100)
+                {
+                    Console.WriteLine($"Part2 answer: {cyclecounter}");
+                    break;
+                }
+                //Console.WriteLine("\n-----------NEW ROUND-----------\n");
+                //WriteMatrix();
+                //Console.WriteLine("");
+            
+            //Console.WriteLine($"Part 1 answer: {FlashCounter}");
+            }
+
         }
 
         private void WriteMatrix()

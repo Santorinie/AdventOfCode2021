@@ -15,7 +15,7 @@ namespace AOC2021D1
         {
 
 
-            Day11 day11 = new Day11();
+            Day12 day12 = new Day12();
             Console.WriteLine("START");
 
             Console.WriteLine("DONE");
