@@ -12,6 +12,7 @@ namespace AOC2021D1
             //SortLines();
             PopulateTags();
             Part1();
+            Part2();
         }
 
         private string[] input = File.ReadAllLines(@"/Users/mac/Projects/AdventOfCode2021/AdventOfCode2021/day10.txt");
@@ -21,6 +22,8 @@ namespace AOC2021D1
         private List<char> openingTags = new List<char>() { '(','[','{','<' };
         private List<char> closingTags = new List<char>() {')',']','}','>' };
         private List<Tag> tags = new List<Tag>();
+        private List<string> Part2Solutions = new List<string>();
+        private List<double> Part2Ints = new List<double>();
 
 
         private void Part1()
@@ -106,7 +109,108 @@ namespace AOC2021D1
 
         private void Part2()
         {
+            foreach (var sor in incompleteLines)
+            {
+                var line = sor.ToCharArray().ToList();
+                List<int> karakterLanc = new List<int>();
+                // Karaktertáblázat: ( ; ) ; [ ; ] ; { ; } ; < ; >
+                // ( = 0 | ) = 1 | [ = 2 | ] = 3 | { = 4 | } = 5 | < = 6 | > = 7 
+                List<char> sequence = new List<char>();
 
+                while (line.Contains(']') || line.Contains(')') || line.Contains('}') || line.Contains('>'))
+                {
+                    for (int i = 0; i < line.Count-1; i++)
+                    {
+                        //char currentChar = line[i];
+                        //char nextChar = line[i+1];
+                        bool isOpeningChar = false;
+                        char opposingChar = 'a';
+                        if (openingTags.Contains(line[i]))
+                        {
+                            isOpeningChar = true; 
+                            opposingChar = tags.First(x => x.OpeningTag == line[i]).ClosingTag;
+
+                        }
+                        else
+                        {
+                            opposingChar = tags.First(x => x.ClosingTag == line[i]).OpeningTag;
+                        }
+                        if (isOpeningChar && line[i+1] == opposingChar)
+                        {
+                            line.RemoveAt(i);
+                            line.RemoveAt(i);
+                        }
+                        else
+                        {
+                            //sequence.Add(line[i]);
+                        }
+                    }
+
+                }
+                line.Reverse();
+                //Console.WriteLine($"Solution: ");
+                List<char> solutionList = new List<char>();
+                foreach (var item in line)
+                {
+                    var opposing = tags.First(x => x.OpeningTag == item).ClosingTag;
+                    solutionList.Add(opposing);
+                }
+                string solution = string.Join("", solutionList);
+                Part2Solutions.Add(solution);
+
+                
+
+            }
+            try
+            {
+
+                foreach (var item2 in Part2Solutions)
+                {
+                    double total_score = 0;
+                    foreach (var item in item2)
+                    {
+
+                        if (item == ')')
+                        {
+                            total_score = total_score * 5 + 1;
+                        }
+                        else if (item == ']')
+                        {
+                            total_score = total_score * 5 + 2;
+                        }
+                        else if (item == '}')
+                        {
+                            total_score = total_score * 5 + 3;
+                        }
+                        else if (item == '>')
+                        {
+                            total_score = total_score * 5 + 4;
+                        }
+                    }
+                    Part2Ints.Add(total_score);
+                    Console.WriteLine(total_score);
+                }
+
+                int numbercount = Part2Ints.Count();
+                int halfindex = numbercount / 2;
+                var sorted = Part2Ints.OrderBy(x => x);
+                double median;
+                if (numbercount%2 == 0)
+                {
+                    median = (sorted.ElementAt(halfindex) + sorted.ElementAt(halfindex - 1)) / 2;
+                }
+                else
+                {
+                    median = sorted.ElementAt(halfindex);
+                }
+                Console.WriteLine($"Part2: {median}");
+
+
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void PopulateTags()
