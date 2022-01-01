@@ -2,9 +2,11 @@
   <MonoDevelop.Ide.ItemProperties.AdventOfCode2021 PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="AdventOfCode2021/Program.cs" Line="18" Column="36" />
-      <File FileName="AdventOfCode2021/Day13.cs" Line="65" Column="1" />
-      <File FileName="AdventOfCode2021/day13.txt" Line="4" Column="4" />
+      <File FileName="AdventOfCode2021/Program.cs" Line="21" Column="13" />
+      <File FileName="AdventOfCode2021/Day13.cs" Line="91" Column="31" />
+      <File FileName="AdventOfCode2021/day13.txt" Line="21" Column="15" />
+      <File FileName="AdventOfCode2021/DayX.cs" Line="57" Column="74" />
+      <File FileName="AdventOfCode2021/lol.cs" Line="94" Column="56" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -29,8 +31,6 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/mac/Projects/AdventOfCode2021/AdventOfCode2021/Day11.cs" relfile="AdventOfCode2021/Day11.cs" line="16" column="1" />
-      <Breakpoint file="/Users/mac/Projects/AdventOfCode2021/AdventOfCode2021/Day13.cs" relfile="AdventOfCode2021/Day13.cs" line="21" column="1" />
-      <Breakpoint file="/Users/mac/Projects/AdventOfCode2021/AdventOfCode2021/Day13.cs" relfile="AdventOfCode2021/Day13.cs" line="65" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

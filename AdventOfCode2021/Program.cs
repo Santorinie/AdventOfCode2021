@@ -16,6 +16,15 @@ namespace AOC2021D1
 
 
             Day13 day13 = new Day13();
+            Puzz_13 anyas = new Puzz_13();
+            lol lol1 = new lol();
+            
+            Console.WriteLine(anyas.GiveMeTheAnswerPart10());
+
+            foreach (var item in anyas.GiveMeTheAnswerPart20())
+            {
+                Console.WriteLine(item);
+            }
             Console.WriteLine("START");
 
             Console.WriteLine("DONE");
