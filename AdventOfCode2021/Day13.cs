@@ -88,7 +88,7 @@ namespace AOC2021D1
             if (foldAxle == "x")
             {
                 newMatrix = new int[matrix.GetLength(0), line];
-                for (int i = matrix.GetLength(0)-1; i > line; i--) // oszlop, ezt keressük
+                for (int i = matrix.GetLength(0)-1  ; i > line; i--) // oszlop, ezt keressük
                 {
                     for (int y = 0; y <= line; y++) // sor
                     {

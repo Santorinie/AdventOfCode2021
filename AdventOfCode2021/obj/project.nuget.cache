@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "CEBbTQK6xRaAQ1/2IOjo/WOECNpZg2ULP4sfV/KrgdXTMAw3xAToUPXehk0cSBxy3WY/frRStFKgMKObMb4cHA==",
+  "dgSpecHash": "rCYZuh/z2gRBSI6RXpVGTZBc3Q3lG/FffTO+03Sf2BG49hqAOURCzUbDME2zJIhadj9OGr2VBvvo6KGZzbGmeA==",
   "success": true,
   "projectFilePath": "/Users/mac/Projects/AdventOfCode2021/AdventOfCode2021/AdventOfCode2021.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/mac/.nuget/packages/morelinq/3.3.2/morelinq.3.3.2.nupkg.sha512"
+  ],
   "logs": []
 }
